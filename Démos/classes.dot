@@ -1,0 +1,6 @@
+digraph "classes" {
+rankdir=BT
+charset="utf-8"
+"pygame_step_07.Actor" [color="black", fontcolor="black", label=<{Actor|dimension<br ALIGN="LEFT"/>position<br ALIGN="LEFT"/>speed<br ALIGN="LEFT"/>|draw(surface: pygame.Surface): None<br ALIGN="LEFT"/>update(): None<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"pygame_step_07.App" [color="black", fontcolor="black", label=<{App|<br ALIGN="LEFT"/>|execute(): None<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+}
