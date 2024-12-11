@@ -3,7 +3,7 @@ from sys import exit
 from random import randint
 from typing import Tuple
 
-WINDOW_SIZE: Tuple[int, int] = (480, 360)
+WINDOW_SIZE: Tuple[int, int] = (400, 400)
 WINDOW_TITLE: str = "pygame window 09"
 FPS = 12
 
