@@ -44,4 +44,4 @@ class Actor:
         if dimension[0] <= 0 or dimension[1] <= 0:
             raise ValueError("each dimension value must be positive")
         self._dimension = dimension
-    #Plus de update et draw
+    
