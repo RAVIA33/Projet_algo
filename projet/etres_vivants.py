@@ -12,7 +12,7 @@ class EtreVivant  :
     vivant : bool                   #Indique si l'être est vivant ou non
     
     def __init__(self,  energie_initiale : int, energie_maximale : int, age_maximale:int, vivant : bool ) :
-        self.energie_actuelle = energie_initiale
+        self.energie = energie_initiale
         self.energie_maximale = energie_maximale
         self.age = 0
         self.age_maximale = age_maximale
@@ -23,11 +23,11 @@ class EtreVivant  :
     def perdre_energie(self, quantite) :
         self.energie -= quantite
         if self.energie <= 0 :
-        self.vivant = False   #self souligné en rouge, peut etre ajouter un getter @
+            self.vivant = False   #self souligné en rouge, peut etre ajouter un getter @
     
     def vieillir(self) :
         self.age += 1
-        if self.age > self.age_maximal :
+        if self.age > self.age_maximal : # > ou >= pour l'age ou il meurt ?
             self.vivant = False 
 
 class Plante(EtreVivant) :
@@ -68,22 +68,26 @@ class Animal(EtreVivant) :
                 energie_maximale=self.energie_maximale,
                 vitesse=self.vitesse,
                 age_maximal=self.age_maximal,
-                portee_reproduction=self.portee_reproduction,
+                vivant = True,
+                reproduction=self.reproduction,
                 cout_reproduction=self.cout_reproduction
             )
             enfants.append(enfant) #On mettra plutôt environnement.append(enfant) quand l'environnement sera créer 
-            return enfants
+        return enfants
 
 
     #def se_deplacer(self, environnement):
-        
-        
-
 
 class Lapin(Animal):
     valeur_nutritive : int
     def __init__(self):
-        super().__init__(energie_initiale=10, energie_maximale=20, vitesse=1, age_maximal=5, reproduction=(1, 3), cout_reproduction= 2)
+        super().__init__(
+            energie_initiale=10,
+            energie_maximale=20,
+            vitesse=1,
+            age_maximal=5,
+            reproduction=(1, 3),
+            cout_reproduction= 2)
         self.valeur_nutritive = 16
     
     def se_faire_manger(self) :
@@ -91,10 +95,15 @@ class Lapin(Animal):
         return self.valeur_nutritive
             
         
-
 class Renard(Animal) :
     def __init__(self):
-        super().__init__(energie_initiale=25, energie_maximale= 50, vitesse = 2, age_maximal=3, reproduction = (1,5), cout_reproduction= 4)
+        super().__init__(
+            energie_initiale=25,
+            energie_maximale= 50,
+            vitesse = 2,
+            age_maximal=3,
+            reproduction = (1,5),
+            cout_reproduction= 4)
         
 #comment on fait pour optenir un diagramme déja ?
 
