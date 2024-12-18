@@ -72,15 +72,18 @@ class ActorSprite(pygame.sprite.Sprite):
     _color: pygame.Color
     _image: pygame.Surface
     _rect: pygame.Rect
+    _tick_number = int
 
     def __init__(self, surface: pygame.Surface, actor: Actor, color_name: str, *groups: List[pygame.sprite.Group]) -> None:
         pygame.sprite.Sprite.__init__(self, *groups)
         self._surface = surface
         self._actor = actor
+        self._tick_number = 0
         self._set_color(color_name)
         self._set_image()
         self._set_rect()
-
+        
+    
     @property
     def color(self) -> pygame.Color:
         return self._color
@@ -127,16 +130,18 @@ class ActorSprite(pygame.sprite.Sprite):
             self._actor.speed.y = -self._actor.speed.y
     
     def update(self):
-        if type(self._actor._type)  == Plante :
-            self._actor._speed = pygame.Vector2(0,0)
-        elif type(self._actor._type) == Lapin :
-            self._actor._speed = pygame.Vector2(randint(-1,1), randint(-1,1))
-        elif type(self._actor._type) == Renard :
-            self._actor._speed = pygame.Vector2(randint(-3,3), randint(-3,3))
+        if self._tick_number % 10 == 0 :
+            if type(self._actor._type)  == Plante :
+                self._actor._speed = pygame.Vector2(0,0)
+            elif type(self._actor._type) == Lapin :
+                self._actor._speed = pygame.Vector2(randint(-1,1), randint(-1,1))
+            elif type(self._actor._type) == Renard :
+                self._actor._speed = pygame.Vector2(randint(-3,3), randint(-3,3))
             
         self.rect.move_ip(self._actor._speed)
         if not self.test_touching_surface_boundaries():
             self._actor.position = pygame.Vector2(self.rect.topleft)
+        self._tick_number += 1
     
 class App:
     __window_size: Tuple[int, int] = WINDOW_SIZE
