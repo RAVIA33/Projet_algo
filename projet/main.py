@@ -21,17 +21,17 @@ class Actor:
         self._position = pygame.Vector2(randint(0,400), randint(0,400))  #Car nimporte quel acteur à une position aléatoire sur l'écran
         if type_name == "plante" :
             self._type = Plante()
-            self._dimension = [3,3]
+            self._dimension = [7,7]
             self._speed = pygame.Vector2(0,0)                     
             #car un acteur de type plante a une dimension [10,10] et une vitesse nulle
         elif type_name == "lapin":
             self._type = Lapin()
-            self._dimension = [5, 5]
+            self._dimension = [7, 7]
             self._speed = pygame.Vector2(randint(-1,1), randint(-1,1))
             #car un acteur de type lapin a une dimension [20,20] et se déplace aléatoirement de 1
         elif type_name == "renard" :
             self._type = Renard()
-            self._dimension = [10,10]
+            self._dimension = [7,7]
             self._speed = pygame.Vector2(randint(-3,3), randint(-3,3))
             #car un acteur de type renard a une dimensions [30,30], et se déplace aléatoirement de 3
             
@@ -127,7 +127,14 @@ class ActorSprite(pygame.sprite.Sprite):
             self._actor.speed.y = -self._actor.speed.y
     
     def update(self):
-        self.rect.move_ip(self._actor.speed)
+        if type(self._actor._type)  == Plante :
+            self._actor._speed = pygame.Vector2(0,0)
+        elif type(self._actor._type) == Lapin :
+            self._actor._speed = pygame.Vector2(randint(-1,1), randint(-1,1))
+        elif type(self._actor._type) == Renard :
+            self._actor._speed = pygame.Vector2(randint(-3,3), randint(-3,3))
+            
+        self.rect.move_ip(self._actor._speed)
         if not self.test_touching_surface_boundaries():
             self._actor.position = pygame.Vector2(self.rect.topleft)
     
