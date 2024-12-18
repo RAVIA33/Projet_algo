@@ -10,7 +10,7 @@ WINDOW_SIZE: Tuple[int, int] = (400, 400)
 WINDOW_TITLE: str = "pygame window 12"
 FPS = 24
 
-#salut
+
 class Actor:
     _type : EtreVivant
     _position: pygame.Vector2

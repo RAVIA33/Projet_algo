@@ -10,11 +10,11 @@ class EtreVivant  :
     age : int                       #Âge actuel
     vivant : bool                   #Indique si l'être est vivant ou non
     
-    def __init__(self,  energie_initiale : int, energie_maximale : int, age_maximale:int) :
+    def __init__(self,  energie_initiale : int, energie_maximale : int, age_maximal:float) :
         self.energie = energie_initiale
         self.energie_maximale = energie_maximale
         self.age = 0
-        self.age_maximale = age_maximale
+        self.age_maximale = age_maximal
         self.vivant = True
         
     #Quand l'énergie baisse, on vérifie que l'entité est toujours vivante
@@ -44,7 +44,6 @@ class Plante(EtreVivant) :
 class Animal(EtreVivant) :
     reproduction : Tuple[int,int]
     cout_reproduction : int
-    vitesse : int
     
     def __init__(self,energie_initiale : int, energie_maximale : int, age_maximal : int, reproduction : Tuple[int, int], cout_reproduction : int) :
         super().__init__(energie_initiale, energie_maximale, age_maximal)
@@ -64,7 +63,6 @@ class Animal(EtreVivant) :
             enfant = type(self)( #chatGPT : type(self) nous renvoi la classe de l'objet self qui ici est la classe Lapin car on est dans sa définition
                 energie_initiale=self.energie, 
                 energie_maximale=self.energie_maximale,
-                vitesse=self.vitesse,
                 age_maximal=self.age_maximal,
                 vivant = True,
                 reproduction=self.reproduction,
@@ -82,7 +80,6 @@ class Lapin(Animal):
         super().__init__(
             energie_initiale=10,
             energie_maximale=20,
-            vitesse=1,
             age_maximal=5,
             reproduction=(1, 3),
             cout_reproduction= 2)
@@ -98,7 +95,6 @@ class Renard(Animal) :
         super().__init__(
             energie_initiale=25,
             energie_maximale= 50,
-            vitesse = 2,
             age_maximal=3,
             reproduction = (1,5),
             cout_reproduction= 4)
