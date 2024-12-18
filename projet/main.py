@@ -12,7 +12,7 @@ FPS = 24
 
 
 class Actor:
-    _type : EtreVivant
+    type : EtreVivant
     _position: pygame.Vector2
     _speed: pygame.Vector2
     _dimension: Tuple[int, int]
@@ -20,17 +20,17 @@ class Actor:
     def __init__(self, type_name : str) -> None:
         self._position = pygame.Vector2(randint(0,400), randint(0,400))  #Car nimporte quel acteur à une position aléatoire sur l'écran
         if type_name == "plante" :
-            self._type = Plante()
+            self.type = Plante()
             self._dimension = [7,7]
             self._speed = pygame.Vector2(0,0)                     
             #car un acteur de type plante a une dimension [10,10] et une vitesse nulle
         elif type_name == "lapin":
-            self._type = Lapin()
+            self.type = Lapin()
             self._dimension = [7, 7]
             self._speed = pygame.Vector2(randint(-1,1), randint(-1,1))
             #car un acteur de type lapin a une dimension [20,20] et se déplace aléatoirement de 1
         elif type_name == "renard" :
-            self._type = Renard()
+            self.type = Renard()
             self._dimension = [7,7]
             self._speed = pygame.Vector2(randint(-3,3), randint(-3,3))
             #car un acteur de type renard a une dimensions [30,30], et se déplace aléatoirement de 3
@@ -83,7 +83,7 @@ class ActorSprite(pygame.sprite.Sprite):
         self._set_image()
         self._set_rect()
         
-    
+
     @property
     def color(self) -> pygame.Color:
         return self._color
@@ -129,14 +129,22 @@ class ActorSprite(pygame.sprite.Sprite):
             self.rect.bottom = self._surface.get_height()  # Positionner au bord inférieur
             self._actor.speed.y = -self._actor.speed.y
     
+ 
     def update(self):
         if self._tick_number % 10 == 0 :
-            if type(self._actor._type)  == Plante :
+            if type(self._actor.type)  == Plante :
                 self._actor._speed = pygame.Vector2(0,0)
-            elif type(self._actor._type) == Lapin :
+
+            elif type(self._actor.type) == Lapin :
                 self._actor._speed = pygame.Vector2(randint(-1,1), randint(-1,1))
-            elif type(self._actor._type) == Renard :
+                self._actor.type.energie -= 1
+                
+            elif type(self._actor.type) == Renard :
                 self._actor._speed = pygame.Vector2(randint(-3,3), randint(-3,3))
+                self._actor.type.energie -= 1
+        if self._actor.type.energie == 0:
+            print("MOURU")
+        
             
         self.rect.move_ip(self._actor._speed)
         if not self.test_touching_surface_boundaries():
