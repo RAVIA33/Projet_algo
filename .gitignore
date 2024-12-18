@@ -225,7 +225,7 @@ pyrightconfig.json
 .history
 .ionide
 
-./Démos/*
-./Projet-nfo/*
+Démos/
+Projet-nfo/
 
 # End of https://www.toptal.com/developers/gitignore/api/python,macos,visualstudiocode
