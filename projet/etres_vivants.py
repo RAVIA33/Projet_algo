@@ -14,7 +14,7 @@ class EtreVivant  :
         self.energie = energie_initiale
         self.energie_maximale = energie_maximale
         self.age = 0
-        self.age_maximale = age_maximal
+        self.age_maximal = age_maximal
         self.vivant = True
         
     #Quand l'énergie baisse, on vérifie que l'entité est toujours vivante
