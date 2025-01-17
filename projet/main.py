@@ -143,7 +143,7 @@ class ActorSprite(pygame.sprite.Sprite):
                 self._actor._speed = pygame.Vector2(randint(-3,3), randint(-3,3))
                 self._actor.type.energie -= 1
         if self._actor.type.energie == 0:
-            print("MOURU")
+            print("MORT")
         
             
         self.rect.move_ip(self._actor._speed)
@@ -177,7 +177,7 @@ class App:
             exit()
 
     def __init_actors(self) -> None:
-        self.__actors_sprites = pygame.sprite.Group()       # On crée un groupe pourles acteurs
+        self.__actors_sprites = pygame.sprite.Group()# On crée un groupe pourles acteurs
         
         #Création des plantes
         for _ in range(700):
@@ -194,9 +194,33 @@ class App:
             renard = Actor("renard")
             ActorSprite(self.__screen, renard, "orange", [self.__actors_sprites])
             
+    #méthode pour gérer les collisions entre les sprites
+    def check_collision(self)-> None:
+        for sprite in self.__actors_sprites:  #pour chaque sprite dasn le groupe actors_sprite(lapins, renards, plantes)
+            #création d'une liste contenant tous les sprites en collision avec sprite 
+            touch_sprites = pygame.sprite.spritecollide(sprite, self.__actors_sprites, False)
+            #pygame.sprite.spritecollide(...) : on vérifie si le sprite rentre en collision avec d'autre sprites du groupe --> false car on ne veut pas que les sprites soit automatiquement supprimé
             
-             
+            #donc la on parcourt chaque autre sprite trouvé dans touch_sprites
+            for other_sprite in touch_sprites:
+                if sprite == other_sprite:
+                    continue  #la on met la condition qu'il se passe rien si il rentre en collsion avec lui-même
+            
+                # print(f"Collision détectée entre {sprite} et {other_sprite}") #j'avais mis ça pour vérifier ce qu'il se passait entre les groupes
 
+                #vérifie si sprite est une instance de la class renard et si other_sprite est une instance de la class Lapin
+                if isinstance(sprite._actor.type, Renard) and isinstance(other_sprite._actor.type, Lapin):  #si c'est le cas alors affiche "renard mange lapin"
+                    print("Renard mange un lapin")
+                    other_sprite.kill()  #supprime le lapin
+                    sprite._actor.type.energie += 10  #augmente l'énergie du renard
+
+                #vérifie si sprite est une instance de la class lapin et si other_sprite est une instance de la class plante
+                elif isinstance(sprite._actor.type, Lapin) and isinstance(other_sprite._actor.type, Plante):
+                    print("Lapin mange une plante")
+                    other_sprite.kill()  #supprime la plante
+                    sprite._actor.type.energie += 5  #augmente l'énergie du lapin
+
+                
     def __update_actors(self) -> None:
         self.__actors_sprites.update()
 
@@ -211,6 +235,8 @@ class App:
             self.__clock.tick(self.__FPS)
             for event in pygame.event.get():
                 self.__handle_events(event)
+
+            self.check_collision()    
             self.__update_actors()
             self.__draw_screen()
             self.__draw_actors()

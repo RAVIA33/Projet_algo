@@ -12,7 +12,7 @@ plante_valeur_nutritive = 3
 #Paramètres de départ pour les plantes
 lapin_nombre_initial = 520
 lapin_energie_initiale = 10
-lapin_energie_maximale = 20
+lapin_energie_maximale = 25
 lapin_vitesse = 1
 lapin_age_maximal = 5
 lapin_reproduction_max = 3
