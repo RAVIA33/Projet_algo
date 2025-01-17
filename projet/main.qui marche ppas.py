@@ -165,3 +165,54 @@ class EtreVivantSprite(pygame.sprite.Sprite) :
 
 app = App()
 app.execute()
+
+
+
+#code def collision
+
+# #méthode pour gérer les collisions entre les sprites
+#     def check_collision(self)-> None:
+#         for sprite in self.__actors_sprites:  
+#             touch_sprites = pygame.sprite.spritecollide(sprite, self.__actors_sprites, False)
+            
+#             for other_sprite in touch_sprites:
+#                 if sprite == other_sprite:
+#                     continue  
+            
+#                 #vérifie si sprite est une instance de la class renard et si other_sprite est une instance de la class Lapin
+#                 if isinstance(sprite._actor.type, Renard) and isinstance(other_sprite._actor.type, Lapin):  #si c'est le cas alors affiche "renard mange lapin"
+#                     if sprite._actor.type.energie < sprite._actor.type.energie_maximale:
+#                         print("Renard mange un lapin")
+#                         energie_gagnee = other_sprite._actor.type.energie #le renard récupère toute l'énergie du lapin
+#                         sprite._actor.type.energie += energie_gagnee
+#                         other_sprite.kill()  #supprime le lapin
+#                         if sprite._actor.type.energie > sprite._actor.type.energie_maximale:
+#                             sprite._actor.type.energie = sprite._actor.type.energie_maximale
+                    
+#                     # Vérification supplémentaire : si l'énergie devient négative par erreur, la limite à 0
+#                     if sprite._actor.type.energie < 0:
+#                         sprite._actor.type.energie = 0
+#                         print(f"{sprite._actor.type.__class__.__name__} est mort par manque d'énergie")
+#                         sprite.kill()  # Supprime le renard s'il n'a plus d'énergie  
+                    
+#                     print(f"{sprite._actor.type.__class__.__name__} énergie actuelle : {sprite._actor.type.energie}")
+
+
+#                 #vérifie si sprite est une instance de la class lapin et si other_sprite est une instance de la class plante
+#                 elif isinstance(sprite._actor.type, Lapin) and isinstance(other_sprite._actor.type, Plante):
+#                     if sprite._actor.type.energie < sprite._actor.type.energie_maximale:
+#                         print("Lapin mange une plante")
+#                         energie_gagnee = other_sprite._actor.type.valeur_nutritive  #le lapin récup l'énergie de la plante
+#                         sprite._actor.type.energie += energie_gagnee
+#                         other_sprite.kill()  #supprime la plante
+#                         if sprite._actor.type.energie > sprite._actor.type.energie_maximale:
+#                             sprite._actor.type.energie = sprite._actor.type.energie_maximale
+
+#                     # Vérification supplémentaire : si l'énergie devient négative par erreur, la limite à 0
+#                     if sprite._actor.type.energie < 0:
+#                         sprite._actor.type.energie = 0
+#                         print(f"{sprite._actor.type.__class__.__name__} est mort par manque d'énergie")
+#                         sprite.kill()  # Supprime le lapin s'il n'a plus d'énergie
+
+#                     print(f"{sprite._actor.type.__class__.__name__} énergie actuelle : {sprite._actor.type.energie}")
+
