@@ -20,8 +20,9 @@ class EtreVivant  :
     #Quand l'énergie baisse, on vérifie que l'entité est toujours vivante
     def perdre_energie(self, quantite) :
         self.energie -= quantite
-        if self.energie <= 0 :
-            self.vivant = False   #self souligné en rouge, peut etre ajouter un getter @
+        if self.energie <= 0:
+            self.energie = 0
+            self.vivant = False#la condition false pour que si son énergie arrive à zéro ça le supprime 
     
     def vieillir(self) :
         self.age += 1

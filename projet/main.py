@@ -196,29 +196,36 @@ class App:
             
     #méthode pour gérer les collisions entre les sprites
     def check_collision(self)-> None:
-        for sprite in self.__actors_sprites:  #pour chaque sprite dasn le groupe actors_sprite(lapins, renards, plantes)
-            #création d'une liste contenant tous les sprites en collision avec sprite 
+        for sprite in self.__actors_sprites:  
             touch_sprites = pygame.sprite.spritecollide(sprite, self.__actors_sprites, False)
-            #pygame.sprite.spritecollide(...) : on vérifie si le sprite rentre en collision avec d'autre sprites du groupe --> false car on ne veut pas que les sprites soit automatiquement supprimé
             
-            #donc la on parcourt chaque autre sprite trouvé dans touch_sprites
             for other_sprite in touch_sprites:
                 if sprite == other_sprite:
-                    continue  #la on met la condition qu'il se passe rien si il rentre en collsion avec lui-même
+                    continue  
             
-                # print(f"Collision détectée entre {sprite} et {other_sprite}") #j'avais mis ça pour vérifier ce qu'il se passait entre les groupes
-
                 #vérifie si sprite est une instance de la class renard et si other_sprite est une instance de la class Lapin
                 if isinstance(sprite._actor.type, Renard) and isinstance(other_sprite._actor.type, Lapin):  #si c'est le cas alors affiche "renard mange lapin"
-                    print("Renard mange un lapin")
-                    other_sprite.kill()  #supprime le lapin
-                    sprite._actor.type.energie += 10  #augmente l'énergie du renard
+                    if sprite._actor.type.energie < sprite._actor.type.energie_maximale:
+                        print("Renard mange un lapin")
+                        energie_gagnee = other_sprite._actor.type.energie #le renard récupère toute l'énergie du lapin
+                        sprite._actor.type.energie += energie_gagnee
+                        if sprite._actor.type.energie < sprite._actor.type.energie_maximale:
+                            sprite._actor.type.energie = min(sprite._actor.type.energie, sprite._actor.type.energie_maximale)#limite au max 
+                            other_sprite.kill()  #supprime le lapin
+                        
+                    print(f"{sprite._actor.type.__class__.__name__} énergie actuelle : {sprite._actor.type.energie}")
+
 
                 #vérifie si sprite est une instance de la class lapin et si other_sprite est une instance de la class plante
                 elif isinstance(sprite._actor.type, Lapin) and isinstance(other_sprite._actor.type, Plante):
-                    print("Lapin mange une plante")
-                    other_sprite.kill()  #supprime la plante
-                    sprite._actor.type.energie += 5  #augmente l'énergie du lapin
+                    if sprite._actor.type.energie < sprite._actor.type.energie_maximale:
+                        print("Lapin mange une plante")
+                        energie_gagnee = other_sprite._actor.type.valeur_nutritive  #le lapin récup l'énergie de la plante
+                        sprite._actor.type.energie += energie_gagnee
+                        sprite._actor.type.energie = min(sprite._actor.type.energie, sprite._actor.type.energie_maximale)  #limite au max
+                        other_sprite.kill()  #supprime la plante
+                    print(f"{sprite._actor.type.__class__.__name__} énergie actuelle : {sprite._actor.type.energie}")
+
 
                 
     def __update_actors(self) -> None:
