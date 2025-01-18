@@ -267,12 +267,7 @@ class App:
 
                 #reproduction
                 elif type(sprite._actor.type) == type(other_sprite._actor.type) and isinstance(sprite._actor.type, Animal):
-                    if isinstance(sprite._actor.type, Lapin):
-                        max_population = MAX_LAPINS
-                    elif isinstance(sprite._actor.type, Renard):
-                        max_population = MAX_RENARDS
-                    else:
-                        continue
+                    max_population = MAX_LAPINS if isinstance(sprite._actor.type, Lapin) else MAX_RENARDS
 
                     #vérification pop. max
                     current_population = sum(1 for s in self.__actors_sprites if isinstance(s._actor.type, type(sprite._actor.type))) #CHATGPT
@@ -283,8 +278,11 @@ class App:
                     #crée les enfants
                     enfants = sprite._actor.type.se_reproduire()
                     for enfant in enfants:
-                        color = "white" if isinstance(enfant, Lapin) else "orange"  # Détermine la couleur
-                        ActorSprite(self.__screen, Actor(enfant.__class__.__name__.lower()), color, [self.__actors_sprites])
+                        if current_population >= max_population:
+                            break  #stop la reproduction si le max est atteint 
+                        current_population += 1
+                        color = "white" if isinstance(enfant, Lapin) else "orange"  
+                        ActorSprite(self.__screen, Actor(enfant.__class__.__name__.lower()), color, [self.__actors_sprites])#CHATGPT
                         print(f"Un nouveau {enfant.__class__.__name__.lower()} est né avec {enfant.energie} d'énergie.")
                         
     def __update_actors(self) -> None:
