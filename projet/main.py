@@ -142,7 +142,7 @@ class ActorSprite(pygame.sprite.Sprite):
                 
                 # Vérifie si le lapin a atteint son âge maximal en cycles
                 if self._actor.type.age >= self._actor.type.age_maximal * 10:  # 3 cycles = 30 étapes pour le lapin
-                    print("Le lapin est mort après", self._actor.type.age_maximal, "cycles")
+                    #print("Le lapin est mort après", self._actor.type.age_maximal, "cycles")
                     self._actor.type.vivant = False  # Le lapin meurt
                     self.kill()  # Supprime le sprite du lapin
                     return
@@ -157,12 +157,12 @@ class ActorSprite(pygame.sprite.Sprite):
                 
                     # Vérifie si le renard a atteint son âge maximal en cycles
                 if self._actor.type.age >= self._actor.type.age_maximal * 10:  # 5 cycles = 50 étapes pour le renard
-                    print("Le renard est mort après", self._actor.type.age_maximal, "cycles")
+                    #print("Le renard est mort après", self._actor.type.age_maximal, "cycles")
                     self._actor.type.vivant = False  # Le renard meurt
                     self.kill()  # Supprime le sprite du renard
                     return
         if self._actor.type.energie <= 0:
-            print(f"{self._actor.type.__class__.__name__} est mort par manque d'énergie")
+            #print(f"{self._actor.type.__class__.__name__} est mort par manque d'énergie")
             self.kill()  # Supprime le sprite s'il est mort
             return
         
@@ -242,10 +242,10 @@ class App:
             
                 #vérifie si sprite est une instance de la class renard et si other_sprite est une instance de la class Lapin
                 if isinstance(sprite._actor.type, Renard) and isinstance(other_sprite._actor.type, Lapin):  #si c'est le cas alors affiche "renard mange lapin"
-                    if sprite._actor.type.energie >= sprite._actor.type.energie_maximale:
-                        print(f"{sprite._actor.type.__class__.__name__} ne peut pas se nourrir, énergie maximale atteinte.")
-                    else:
-                        print("Renard mange un lapin")
+                    #if sprite._actor.type.energie >= sprite._actor.type.energie_maximale:
+                        #print(f"{sprite._actor.type.__class__.__name__} ne peut pas se nourrir, énergie maximale atteinte.")
+                    if sprite._actor.type.energie < sprite._actor.type.energie_maximale:
+                        #print("Renard mange un lapin")
                         energie_gagnee = other_sprite._actor.type.energie #le renard récupère toute l'énergie du lapin
                         sprite._actor.type.energie += energie_gagnee
                         other_sprite.kill()  #supprime le lapin
@@ -255,18 +255,18 @@ class App:
                     #vérification supplémentaire : si l'énergie devient négative par erreur, la limite à 0
                     if sprite._actor.type.energie < 0:
                         sprite._actor.type.energie = 0
-                        print(f"{sprite._actor.type.__class__.__name__} est mort par manque d'énergie")
+                        #print(f"{sprite._actor.type.__class__.__name__} est mort par manque d'énergie")
                         sprite.kill()  #supprime le renard s'il n'a plus d'énergie  
                     
-                    print(f"{sprite._actor.type.__class__.__name__} énergie actuelle : {sprite._actor.type.energie}")
+                    #print(f"{sprite._actor.type.__class__.__name__} énergie actuelle : {sprite._actor.type.energie}")
 
 
                 #vérifie si sprite est une instance de la class lapin et si other_sprite est une instance de la class plante
                 elif isinstance(sprite._actor.type, Lapin) and isinstance(other_sprite._actor.type, Plante):
-                    if sprite._actor.type.energie >= sprite._actor.type.energie_maximale:
-                        print(f"{sprite._actor.type.__class__.__name__} ne peut pas se nourrir, énergie maximale atteinte.")
-                    else:  
-                        print("Lapin mange une plante")
+                    #if sprite._actor.type.energie >= sprite._actor.type.energie_maximale:
+                        #print(f"{sprite._actor.type.__class__.__name__} ne peut pas se nourrir, énergie maximale atteinte.")
+                    if sprite._actor.type.energie < sprite._actor.type.energie_maximale:
+                        #print("Lapin mange une plante")
                         energie_gagnee = other_sprite._actor.type.valeur_nutritive  #le lapin récup l'énergie de la plante
                         sprite._actor.type.energie += energie_gagnee
                         other_sprite.kill()  #supprime la plante
@@ -276,10 +276,10 @@ class App:
                     #vérification supplémentaire : si l'énergie devient négative par erreur, la limite à 0
                     if sprite._actor.type.energie < 0:
                         sprite._actor.type.energie = 0
-                        print(f"{sprite._actor.type.__class__.__name__} est mort par manque d'énergie")
+                        #print(f"{sprite._actor.type.__class__.__name__} est mort par manque d'énergie")
                         sprite.kill()  #supprime le lapin s'il n'a plus d'énergie
 
-                    print(f"{sprite._actor.type.__class__.__name__} énergie actuelle : {sprite._actor.type.energie}")
+                    #print(f"{sprite._actor.type.__class__.__name__} énergie actuelle : {sprite._actor.type.energie}")
 
                 #reproduction
                 elif type(sprite._actor.type) == type(other_sprite._actor.type) and isinstance(sprite._actor.type, Animal):
@@ -288,7 +288,7 @@ class App:
                     #vérification pop. max
                     current_population = sum(1 for s in self.__actors_sprites if isinstance(s._actor.type, type(sprite._actor.type))) #CHATGPT
                     if current_population >= max_population:
-                        print(f"Population maximale de {type(sprite._actor.type).__name__.lower()} atteinte.")
+                        #print(f"Population maximale de {type(sprite._actor.type).__name__.lower()} atteinte.")
                         continue
 
                     #crée les enfants
@@ -299,7 +299,7 @@ class App:
                         current_population += 1
                         color = "white" if isinstance(enfant, Lapin) else "orange"  
                         ActorSprite(self.__screen, Actor(enfant.__class__.__name__.lower()), color, [self.__actors_sprites])#CHATGPT
-                        print(f"Un nouveau {enfant.__class__.__name__.lower()} est né avec {enfant.energie} d'énergie.")
+                        #print(f"Un nouveau {enfant.__class__.__name__.lower()} est né avec {enfant.energie} d'énergie.")
                         
     def __update_actors(self) -> None:
         self.__actors_sprites.update()
