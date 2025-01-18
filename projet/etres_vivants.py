@@ -30,7 +30,7 @@ class EtreVivant  :
             self.vivant = False 
     def est_vivant(self) -> bool:
         return self.energie > 0
-
+#hello
 class Plante(EtreVivant) :
     valeur_nutritive : int 
     
