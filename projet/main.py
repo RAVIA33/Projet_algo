@@ -139,6 +139,13 @@ class ActorSprite(pygame.sprite.Sprite):
                 self._actor._speed = pygame.Vector2(randint(-1,1), randint(-1,1))
                 if self._actor._speed.length_squared() > 0:
                     self._actor.type.energie -= 1
+                
+                # Vérifie si le lapin a atteint son âge maximal en cycles
+                if self._actor.type.age >= self._actor.type.age_maximal * 10:  # 3 cycles = 30 étapes pour le lapin
+                    print("Le lapin est mort après", self._actor.type.age_maximal, "cycles")
+                    self._actor.type.vivant = False  # Le lapin meurt
+                    self.kill()  # Supprime le sprite du lapin
+                    return
 
                 # self._actor.type.perdre_energie(1)
                 # print(f"énergie lapin mnt:{self._actor.type.energie}")
@@ -147,6 +154,13 @@ class ActorSprite(pygame.sprite.Sprite):
                 self._actor._speed = pygame.Vector2(randint(-3,3), randint(-3,3))
                 if self._actor._speed.length_squared() > 0:
                     self._actor.type.energie -= 1
+                
+                    # Vérifie si le renard a atteint son âge maximal en cycles
+                if self._actor.type.age >= self._actor.type.age_maximal * 10:  # 5 cycles = 50 étapes pour le renard
+                    print("Le renard est mort après", self._actor.type.age_maximal, "cycles")
+                    self._actor.type.vivant = False  # Le renard meurt
+                    self.kill()  # Supprime le sprite du renard
+                    return
         if self._actor.type.energie <= 0:
             print(f"{self._actor.type.__class__.__name__} est mort par manque d'énergie")
             self.kill()  # Supprime le sprite s'il est mort
@@ -161,7 +175,9 @@ class ActorSprite(pygame.sprite.Sprite):
         if not self.test_touching_surface_boundaries():
             self._actor.position = pygame.Vector2(self.rect.topleft)
         self._tick_number += 1
-    
+        
+        self._actor.type.vieillir()
+        
 class App:
     __window_size: Tuple[int, int] = WINDOW_SIZE
     __window_title: str = WINDOW_TITLE
