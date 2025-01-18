@@ -137,11 +137,17 @@ class ActorSprite(pygame.sprite.Sprite):
 
             elif type(self._actor.type) == Lapin :
                 self._actor._speed = pygame.Vector2(randint(-1,1), randint(-1,1))
-                self._actor.type.energie -= 1
+                if self._actor._speed.length_squared() > 0:
+                    self._actor.type.energie -= 1
                 
             elif type(self._actor.type) == Renard :
                 self._actor._speed = pygame.Vector2(randint(-3,3), randint(-3,3))
-                self._actor.type.energie -= 1
+                if self._actor._speed.length_squared() > 0:
+                    self._actor.type.energie -= 1
+        if self._actor.type.energie <= 0:
+            print(f"{self._actor.type.__class__.__name__} est mort par manque d'énergie")
+            self.kill()  # Supprime le sprite s'il est mort
+            return
         # if self._actor.type.energie == 0:
         #     print("MORT")
         
@@ -248,6 +254,9 @@ class App:
                 
     def __update_actors(self) -> None:
         self.__actors_sprites.update()
+        for sprite in self.__actors_sprites.copy():
+            if not sprite._actor.type.est_vivant():  # Vérifie si l'entité est vivante
+                sprite.kill()  # Supprime le sprite mort
 
     def __draw_screen(self) -> None:
         self.__screen.fill(pygame.color.THECOLORS["black"])
