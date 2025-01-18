@@ -275,7 +275,7 @@ class App:
                         continue
 
                     #vérification pop. max
-                    current_population = sum(1 for s in self.__actors_sprites if isinstance(s._actor.type, type(sprite._actor.type)))
+                    current_population = sum(1 for s in self.__actors_sprites if isinstance(s._actor.type, type(sprite._actor.type))) #CHATGPT
                     if current_population >= max_population:
                         print(f"Population maximale de {type(sprite._actor.type).__name__.lower()} atteinte.")
                         continue

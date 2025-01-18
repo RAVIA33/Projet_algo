@@ -57,7 +57,7 @@ class Animal(EtreVivant) :
         if self.energie < self.cout_reproduction : #ne peut pas se reproduire si sont énergie est insuffisante
             return []       
         
-        #réduction de l'énergie lors de la reproductio 
+        #réduction de l'énergie lors de la reproduction 
         self.perdre_energie(self.cout_reproduction)
 
         #génère des enfants lors de la collision, entre 0 et 3 aléatoirement
@@ -74,8 +74,6 @@ class Animal(EtreVivant) :
             enfants.append(enfant) #On mettra plutôt environnement.append(enfant) quand l'environnement sera créer 
         return enfants
 
-
-    #def se_deplacer(self, environnement):
 
 class Lapin(Animal):
     valeur_nutritive : int
