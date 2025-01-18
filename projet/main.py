@@ -283,11 +283,17 @@ class App:
         print(f"  Renards: {nb_renards}")
 
     def renouveler_plantes(self) -> None:
-        #ajoute des plantes pour garder la pop à niveau
         nb_actuel = sum(1 for sprite in self.__actors_sprites if isinstance(sprite._actor.type, Plante))
-        for _ in range(self.__plants_initial - nb_actuel):
+
+        nb_a_ajouter = self.__plants_initial - nb_actuel
+
+        #ajouter des nouvelles plantes
+        for _ in range(nb_a_ajouter):
             plante = Actor("plante")
             ActorSprite(self.__screen, plante, "green", [self.__actors_sprites])
+
+        #afficher ce message
+        print(f"Renouvellement des plantes : {nb_a_ajouter} ajoutées (Total : {self.__plants_initial})")
 
 
     def __draw_screen(self) -> None:

@@ -14,7 +14,7 @@ lapin_vitesse = 1
 lapin_age_maximal = 5
 lapin_reproduction_max = 3
 lapin_reproduction_min = 1
-lapin_couts_reproduction = 2 #a définir proportionnel aux nombres d'enfants ?
+lapin_couts_reproduction = 2 
 lapin_valeur_nutritive = 16
 lapin_cout_deplacement =  4 #A définir
 
