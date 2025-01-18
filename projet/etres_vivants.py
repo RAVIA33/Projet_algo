@@ -54,20 +54,20 @@ class Animal(EtreVivant) :
         self.cout_reproduction = cout_reproduction
             
     def se_reproduire(self ) -> List["Animal"] : 
-        if not self.vivant :
-            return []       #Code peut être inutile car dans tous les cas pour rencontrer un animal, il doit être vivant
-        if self.energie < self.cout_reproduction:
-            return []                               #Doit avoir l'énergie necessaire pour se reporduire
-        self.energie -= self.cout_reproduction      #Devra être ajuster pour être proportionnel au nombre d'enfants si demandé
-        nombre_enfants = random.randint(self.reproduction[0], self.reproduction[1]) 
+        if self.energie < self.cout_reproduction : #ne peut pas se reproduire si sont énergie est insuffisante
+            return []       
         
+        #réduction de l'énergie lors de la reproductio 
+        self.perdre_energie(self.cout_reproduction)
+
+        #génère des enfants lors de la collision, entre 0 et 3 aléatoirement
+        nombre_enfants = random.randint(self.reproduction[0], self.reproduction[1]) 
         enfants = []
         for _ in range(nombre_enfants) : #ChatGPT : underscore for _ ... convention lorsque la variable n'a pas besoin d'être utilisée dans la boucle
             enfant = type(self)( #chatGPT : type(self) nous renvoi la classe de l'objet self qui ici est la classe Lapin car on est dans sa définition
-                energie_initiale=self.energie, 
+                energie_initiale=self.__class__.energie_initiale,  #energie initiale définit pour chaque entité
                 energie_maximale=self.energie_maximale,
                 age_maximal=self.age_maximal,
-                vivant = True,
                 reproduction=self.reproduction,
                 cout_reproduction=self.cout_reproduction
             )
@@ -79,9 +79,10 @@ class Animal(EtreVivant) :
 
 class Lapin(Animal):
     valeur_nutritive : int
-    def __init__(self):
+    energie_initiale= 10
+    def __init__(self, energie_initiale=energie_initiale, energie_maximale=20, age_maximal=5, reproduction=(1, 3), cout_reproduction=2):
         super().__init__(
-            energie_initiale=10,
+            energie_initiale=energie_initiale,
             energie_maximale=20,
             age_maximal=5,
             reproduction=(1, 3),
@@ -94,12 +95,13 @@ class Lapin(Animal):
             
         
 class Renard(Animal) :
-    def __init__(self):
+    energie_initiale=25
+    def __init__(self, energie_initiale=energie_initiale, energie_maximale=50, age_maximal=3, reproduction=(1, 2), cout_reproduction=4):
         super().__init__(
-            energie_initiale=25,
+            energie_initiale=energie_initiale,
             energie_maximale= 50,
             age_maximal=3,
-            reproduction = (1,5),
+            reproduction = (1,2),
             cout_reproduction= 4)
         
 #comment on fait pour optenir un diagramme déja ?

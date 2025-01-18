@@ -215,6 +215,8 @@ class App:
             
     #méthode pour gérer les collisions entre les sprites
     def check_collision(self)-> None:
+        MAX_LAPINS = 520  
+        MAX_RENARDS = 22
         for sprite in self.__actors_sprites:  
             touch_sprites = pygame.sprite.spritecollide(sprite, self.__actors_sprites, False)
             
@@ -263,8 +265,28 @@ class App:
 
                     print(f"{sprite._actor.type.__class__.__name__} énergie actuelle : {sprite._actor.type.energie}")
 
+                #reproduction
+                elif type(sprite._actor.type) == type(other_sprite._actor.type) and isinstance(sprite._actor.type, Animal):
+                    if isinstance(sprite._actor.type, Lapin):
+                        max_population = MAX_LAPINS
+                    elif isinstance(sprite._actor.type, Renard):
+                        max_population = MAX_RENARDS
+                    else:
+                        continue
 
-                
+                    #vérification pop. max
+                    current_population = sum(1 for s in self.__actors_sprites if isinstance(s._actor.type, type(sprite._actor.type)))
+                    if current_population >= max_population:
+                        print(f"Population maximale de {type(sprite._actor.type).__name__.lower()} atteinte.")
+                        continue
+
+                    #crée les enfants
+                    enfants = sprite._actor.type.se_reproduire()
+                    for enfant in enfants:
+                        color = "white" if isinstance(enfant, Lapin) else "orange"  # Détermine la couleur
+                        ActorSprite(self.__screen, Actor(enfant.__class__.__name__.lower()), color, [self.__actors_sprites])
+                        print(f"Un nouveau {enfant.__class__.__name__.lower()} est né avec {enfant.energie} d'énergie.")
+                        
     def __update_actors(self) -> None:
         self.__actors_sprites.update()
         for sprite in self.__actors_sprites.copy():
