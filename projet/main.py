@@ -137,11 +137,12 @@ class ActorSprite(pygame.sprite.Sprite):
 
             elif type(self._actor.type) == Lapin :
                 self._actor._speed = pygame.Vector2(randint(-1,1), randint(-1,1))
-                self._actor.type.energie -= 1
+                self._actor.type.perdre_energie(1)
+                print(f"énergie lapin mnt:{self._actor.type.energie}")
                 
             elif type(self._actor.type) == Renard :
                 self._actor._speed = pygame.Vector2(randint(-3,3), randint(-3,3))
-                self._actor.type.energie -= 1
+                self._actor.type.perdre_energie(2)
         # if self._actor.type.energie == 0:
         #     print("MORT")
         
