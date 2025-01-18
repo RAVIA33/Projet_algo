@@ -28,12 +28,12 @@ class Actor:
             self.type = Lapin()
             self._dimension = [7, 7]
             self._speed = pygame.Vector2(randint(-1,1), randint(-1,1))
-            #car un acteur de type lapin a une dimension [20,20] et se déplace aléatoirement de 1
+            #car un acteur de type lapin a une dimension [20,20] et se déplace aléatoirement de 0 à 1
         elif type_name == "renard" :
             self.type = Renard()
             self._dimension = [7,7]
             self._speed = pygame.Vector2(randint(-3,3), randint(-3,3))
-            #car un acteur de type renard a une dimensions [30,30], et se déplace aléatoirement de 3
+            #car un acteur de type renard a une dimensions [30,30], et se déplace aléatoirement de 0 à 3
             
 
     @property
@@ -177,6 +177,14 @@ class App:
         self.__init_actors()
         self.__running = True
 
+         # Configuration des cycles et étapes
+        self.__fps = FPS  #image par seconde
+        self.__steps_per_cycle = 10  #nbr d'étapes par cycle
+        self.__current_frame = 0  #compte les frames dans l'étape
+        self.__current_step = 0  #compte les étapes dans le cycle
+        self.__cycle = 1  #compte les cycles
+        self.__plants_initial = 700  #nbr de plantes au début 
+
     def __init_screen(self) -> None:
         self.__screen = pygame.display.set_mode(self.__window_size)
         pygame.display.set_caption(self.__window_title)
@@ -262,7 +270,26 @@ class App:
         for sprite in self.__actors_sprites.copy():
             if not sprite._actor.type.est_vivant():  # Vérifie si l'entité est vivante
                 sprite.kill()  # Supprime le sprite mort
-#hello
+
+    def afficher_resume_cycle(self) -> None:
+        #affiche le récap des populations pour le cycle actuel
+        nb_plantes = sum(1 for sprite in self.__actors_sprites if isinstance(sprite._actor.type, Plante))
+        nb_lapins = sum(1 for sprite in self.__actors_sprites if isinstance(sprite._actor.type, Lapin))
+        nb_renards = sum(1 for sprite in self.__actors_sprites if isinstance(sprite._actor.type, Renard))
+
+        print(f"Cycle {self.__cycle}:")
+        print(f"  Plantes: {nb_plantes}")
+        print(f"  Lapins: {nb_lapins}")
+        print(f"  Renards: {nb_renards}")
+
+    def renouveler_plantes(self) -> None:
+        #ajoute des plantes pour garder la pop à niveau
+        nb_actuel = sum(1 for sprite in self.__actors_sprites if isinstance(sprite._actor.type, Plante))
+        for _ in range(self.__plants_initial - nb_actuel):
+            plante = Actor("plante")
+            ActorSprite(self.__screen, plante, "green", [self.__actors_sprites])
+
+
     def __draw_screen(self) -> None:
         self.__screen.fill(pygame.color.THECOLORS["black"])
 
@@ -272,14 +299,33 @@ class App:
     def execute(self) -> None:
         while self.__running:
             self.__clock.tick(self.__FPS)
+
+            #gérer les événements
             for event in pygame.event.get():
                 self.__handle_events(event)
 
+            #met à jour les entités et collisions
             self.check_collision()    
             self.__update_actors()
+
+            #gérer des frames et des cycles
+            self.__current_frame += 1
+            if self.__current_frame >= self.__FPS:  #étape dure 1 seconde 
+                self.__current_frame = 0
+                self.__current_step += 1  #on passe à létape suivante
+
+                #vérification si le cycle est terminé
+                if self.__current_step >= self.__steps_per_cycle:
+                    self.afficher_resume_cycle()  #affiche le résumé des cycles 
+                    self.renouveler_plantes()  #renouvelle les plantes
+                    self.__cycle += 1  #passe au cycle suivant
+                    self.__current_step = 0  #réinitialise les étapes
+
+            #dessin de l'écran
             self.__draw_screen()
             self.__draw_actors()
             pygame.display.flip()
+
             
 app = App()
 app.execute()
