@@ -22,12 +22,14 @@ class EtreVivant  :
         self.energie -= quantite
         if self.energie <= 0:
             self.energie = 0
-            self.vivant = False#la condition false pour que si son énergie arrive à zéro ça le supprime 
+            self.vivant = False #la condition false pour que si son énergie arrive à zéro ça le supprime 
     
     def vieillir(self) :
         self.age += 1
         if self.age > self.age_maximal : # > ou >= pour l'age ou il meurt ?
             self.vivant = False 
+    def est_vivant(self) -> bool:
+        return self.energie > 0
 
 class Plante(EtreVivant) :
     valeur_nutritive : int 

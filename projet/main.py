@@ -249,6 +249,9 @@ class App:
                 
     def __update_actors(self) -> None:
         self.__actors_sprites.update()
+        for sprite in self.__actors_sprites.copy():
+            if not sprite._actor.type.est_vivant():  # Vérifie si l'entité est vivante
+                sprite.kill()  # Supprime le sprite mort
 
     def __draw_screen(self) -> None:
         self.__screen.fill(pygame.color.THECOLORS["black"])
