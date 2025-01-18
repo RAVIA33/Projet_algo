@@ -177,7 +177,7 @@ class App:
         self.__init_actors()
         self.__running = True
 
-         # Configuration des cycles et étapes
+         #configuration des cycles et étapes
         self.__fps = FPS  #image par seconde
         self.__steps_per_cycle = 10  #nbr d'étapes par cycle
         self.__current_frame = 0  #compte les frames dans l'étape
@@ -198,17 +198,17 @@ class App:
     def __init_actors(self) -> None:
         self.__actors_sprites = pygame.sprite.Group()# On crée un groupe pourles acteurs
         
-        #Création des plantes
+        #création des plantes
         for _ in range(700):
             plante = Actor("plante")                            
             ActorSprite(self.__screen, plante, "green", [self.__actors_sprites])
 
-        #Création des lapins
+        #création des lapins
         for _ in range(520) :
             lapin = Actor("lapin") 
             ActorSprite(self.__screen, lapin, "white", [self.__actors_sprites])
         
-        #Création des renards
+        #création des renards
         for _ in range(22):
             renard = Actor("renard")
             ActorSprite(self.__screen, renard, "orange", [self.__actors_sprites])
@@ -236,11 +236,11 @@ class App:
                         if sprite._actor.type.energie > sprite._actor.type.energie_maximale:
                             sprite._actor.type.energie = sprite._actor.type.energie_maximale
                     
-                    # Vérification supplémentaire : si l'énergie devient négative par erreur, la limite à 0
+                    #vérification supplémentaire : si l'énergie devient négative par erreur, la limite à 0
                     if sprite._actor.type.energie < 0:
                         sprite._actor.type.energie = 0
                         print(f"{sprite._actor.type.__class__.__name__} est mort par manque d'énergie")
-                        sprite.kill()  # Supprime le renard s'il n'a plus d'énergie  
+                        sprite.kill()  #supprime le renard s'il n'a plus d'énergie  
                     
                     print(f"{sprite._actor.type.__class__.__name__} énergie actuelle : {sprite._actor.type.energie}")
 
@@ -257,11 +257,11 @@ class App:
                         if sprite._actor.type.energie > sprite._actor.type.energie_maximale:
                             sprite._actor.type.energie = sprite._actor.type.energie_maximale
 
-                    # Vérification supplémentaire : si l'énergie devient négative par erreur, la limite à 0
+                    #vérification supplémentaire : si l'énergie devient négative par erreur, la limite à 0
                     if sprite._actor.type.energie < 0:
                         sprite._actor.type.energie = 0
                         print(f"{sprite._actor.type.__class__.__name__} est mort par manque d'énergie")
-                        sprite.kill()  # Supprime le lapin s'il n'a plus d'énergie
+                        sprite.kill()  #supprime le lapin s'il n'a plus d'énergie
 
                     print(f"{sprite._actor.type.__class__.__name__} énergie actuelle : {sprite._actor.type.energie}")
 
@@ -288,8 +288,8 @@ class App:
     def __update_actors(self) -> None:
         self.__actors_sprites.update()
         for sprite in self.__actors_sprites.copy():
-            if not sprite._actor.type.est_vivant():  # Vérifie si l'entité est vivante
-                sprite.kill()  # Supprime le sprite mort
+            if not sprite._actor.type.est_vivant():  
+                sprite.kill()  
 
     def afficher_resume_cycle(self) -> None:
         #affiche le récap des populations pour le cycle actuel
