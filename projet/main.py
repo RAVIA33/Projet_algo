@@ -131,7 +131,7 @@ class ActorSprite(pygame.sprite.Sprite):
     
  
     def update(self):
-        if self._tick_number % 10 == 0 :
+        if self._tick_number % 24 == 0 :
             if type(self._actor.type)  == Plante :
                 self._actor._speed = pygame.Vector2(0,0)
 
@@ -141,7 +141,8 @@ class ActorSprite(pygame.sprite.Sprite):
                     self._actor.type.energie -= 1
                 
                 # Vérifie si le lapin a atteint son âge maximal en cycles
-                if self._actor.type.age >= self._actor.type.age_maximal * 10:  # 3 cycles = 30 étapes pour le lapin
+                
+                if self._actor.type.age >= self._actor.type.age_maximal * 12 * 24:  # 3 cycles = 3 fois 24 étapes pour le lapin
                     #print("Le lapin est mort après", self._actor.type.age_maximal, "cycles")
                     self._actor.type.vivant = False  # Le lapin meurt
                     self.kill()  # Supprime le sprite du lapin
@@ -156,8 +157,8 @@ class ActorSprite(pygame.sprite.Sprite):
                     self._actor.type.energie -= 1
                 
                     # Vérifie si le renard a atteint son âge maximal en cycles
-                if self._actor.type.age >= self._actor.type.age_maximal * 10:  # 5 cycles = 50 étapes pour le renard
-                    #print("Le renard est mort après", self._actor.type.age_maximal, "cycles")
+                if self._actor.type.age >= self._actor.type.age_maximal * 12 * 24:  # 5 cycles = 5 fois 24 étapes pour le renard
+                    print("Le renard est mort après", self._actor.type.age_maximal, "cycles")
                     self._actor.type.vivant = False  # Le renard meurt
                     self.kill()  # Supprime le sprite du renard
                     return
@@ -195,9 +196,9 @@ class App:
 
          #configuration des cycles et étapes
         self.__fps = FPS  #image par seconde
-        self.__steps_per_cycle = 10  #nbr d'étapes par cycle
+        self.__steps_per_cycle = 12  #nbr d'étapes par cycle
         self.__current_frame = 0  #compte les frames dans l'étape
-        self.__current_step = 0  #compte les étapes dans le cycle
+        self.__current_step = 1  #compte les étapes dans le cycle
         self.__cycle = 1  #compte les cycles
         self.__plants_initial = 700  #nbr de plantes au début 
 
@@ -339,8 +340,10 @@ class App:
         self.__actors_sprites.draw(self.__screen)
 
     def execute(self) -> None:
+        self.afficher_resume_cycle()
         while self.__running:
             self.__clock.tick(self.__FPS)
+            
 
             #gérer les événements
             for event in pygame.event.get():
@@ -354,14 +357,15 @@ class App:
             self.__current_frame += 1
             if self.__current_frame >= self.__FPS:  #étape dure 1 seconde 
                 self.__current_frame = 0
+                print(self.__cycle, self.__current_step)
                 self.__current_step += 1  #on passe à létape suivante
 
                 #vérification si le cycle est terminé
-                if self.__current_step >= self.__steps_per_cycle:
+                if self.__current_step > self.__steps_per_cycle: 
+                    self.__cycle += 1 #passe au cycle suivant
                     self.afficher_resume_cycle()  #affiche le résumé des cycles 
-                    self.renouveler_plantes()  #renouvelle les plantes
-                    self.__cycle += 1  #passe au cycle suivant
-                    self.__current_step = 0  #réinitialise les étapes
+                    self.renouveler_plantes()  #renouvelle les plantes 
+                    self.__current_step = 1  #réinitialise les étapes
 
             #dessin de l'écran
             self.__draw_screen()

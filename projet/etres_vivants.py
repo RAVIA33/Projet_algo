@@ -78,11 +78,11 @@ class Animal(EtreVivant) :
 class Lapin(Animal):
     valeur_nutritive : int
     energie_initiale= 10
-    def __init__(self, energie_initiale=energie_initiale, energie_maximale=20, age_maximal=5, reproduction=(1, 3), cout_reproduction=2):
+    def __init__(self, energie_initiale=energie_initiale, energie_maximale=20, age_maximal=3, reproduction=(1, 3), cout_reproduction=2):
         super().__init__(
             energie_initiale=energie_initiale,
             energie_maximale=20,
-            age_maximal=5,
+            age_maximal=3,
             reproduction=(1, 3),
             cout_reproduction= 2)
         self.valeur_nutritive = 16
@@ -94,11 +94,11 @@ class Lapin(Animal):
         
 class Renard(Animal) :
     energie_initiale=25
-    def __init__(self, energie_initiale=energie_initiale, energie_maximale=50, age_maximal=3, reproduction=(1, 2), cout_reproduction=4):
+    def __init__(self, energie_initiale=energie_initiale, energie_maximale=50, age_maximal=5, reproduction=(1, 2), cout_reproduction=4):
         super().__init__(
             energie_initiale=energie_initiale,
             energie_maximale= 50,
-            age_maximal=3,
+            age_maximal=5,
             reproduction = (1,2),
             cout_reproduction= 4)
         
