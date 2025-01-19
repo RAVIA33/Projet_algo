@@ -1,14 +1,7 @@
 from typing import Tuple
 from typing import List
 import random
-from parametres import (
-    lapin_energie_initiale, lapin_energie_maximale, lapin_age_maximal, 
-    lapin_reproduction_min, lapin_reproduction_max, lapin_couts_reproduction,
-    lapin_valeur_nutritive, lapin_cout_deplacement,
-    renard_energie_initiale, renard_energie_maximale, renard_age_maximal,
-    renard_reproduction_min, renard_reproduction_max, renard_couts_reproduction,
-    renard_couts_deplacement, plante_valeur_nutritive
-)
+from parametres import *
 
 
 
