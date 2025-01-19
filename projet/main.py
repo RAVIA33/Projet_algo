@@ -3,8 +3,8 @@ from random import randint
 from sys import exit
 from typing import List, Tuple
 from random import randint
-from etres_vivants import EtreVivant, Plante, Animal, Lapin, Renard
-from parametres import plante_dimension,lapin_dimension, lapin_vitesse, renard_dimension,renard_vitesse, plante_nombre_initial, renard_nombre_initial, lapin_nombre_initial,plante_couleur,lapin_couleur,renard_couleur, plante_type_name, lapin_type_name,renard_type_name
+from etres_vivants import *
+from parametres import *
 
 
 WINDOW_SIZE: Tuple[int, int] = (400, 400)
