@@ -1,4 +1,4 @@
-
+from typing import Tuple
 
 #Paramètres de départ pour les plantes
 #plante_age_maximal = "infini"
@@ -38,3 +38,8 @@ renard_couts_deplacement = 1 #a definir  proportionnel au nombre de case
 renard_dimension = (10,10)
 renard_vitesse = (-3,3)
 renard_couleur = "orange"
+
+#Parametres de l'environnement : 
+WINDOW_SIZE: Tuple[int, int] = (400, 400)
+WINDOW_TITLE: str = "Simulation proie-prédateur"
+FPS = 24

@@ -7,9 +7,7 @@ from etres_vivants import *
 from parametres import *
 
 
-WINDOW_SIZE: Tuple[int, int] = (400, 400)
-WINDOW_TITLE: str = "pygame window 12"
-FPS = 24
+
 
 
 class Actor:
