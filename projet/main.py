@@ -4,6 +4,7 @@ from sys import exit
 from typing import List, Tuple
 from random import randint
 from etres_vivants import EtreVivant, Plante, Animal, Lapin, Renard
+from parametres import plante_dimension,lapin_dimension, lapin_vitesse, renard_dimension,renard_vitesse, plante_nombre_initial, renard_nombre_initial, lapin_nombre_initial,plante_couleur,lapin_couleur,renard_couleur, plante_type_name, lapin_type_name,renard_type_name
 
 
 WINDOW_SIZE: Tuple[int, int] = (400, 400)
@@ -12,28 +13,28 @@ FPS = 24
 
 
 class Actor:
-    type : EtreVivant
-    _position: pygame.Vector2
-    _speed: pygame.Vector2
-    _dimension: Tuple[int, int]
+    # type : EtreVivant
+    # _position: pygame.Vector2
+    # _speed: pygame.Vector2
+    # _dimension: Tuple[int, int]
 
     def __init__(self, type_name : str) -> None:
-        self._position = pygame.Vector2(randint(0,400), randint(0,400))  #Car nimporte quel acteur à une position aléatoire sur l'écran
-        if type_name == "plante" :
+        self._position = pygame.Vector2(randint(0,WINDOW_SIZE[0]), randint(0,WINDOW_SIZE[1]))  #Car nimporte quel acteur à une position aléatoire sur l'écran qui est WINDOW_SIZE
+        if type_name == plante_type_name :
             self.type = Plante()
-            self._dimension = [7,7]
+            self._dimension = plante_dimension
             self._speed = pygame.Vector2(0,0)                     
-            #car un acteur de type plante a une dimension [10,10] et une vitesse nulle
-        elif type_name == "lapin":
+            #car un acteur de type plante a une dimension [5,5] et une vitesse nulle
+        elif type_name == lapin_type_name:
             self.type = Lapin()
-            self._dimension = [7, 7]
-            self._speed = pygame.Vector2(randint(-1,1), randint(-1,1))
-            #car un acteur de type lapin a une dimension [20,20] et se déplace aléatoirement de 0 à 1
-        elif type_name == "renard" :
+            self._dimension = lapin_dimension
+            self._speed = pygame.Vector2(randint(*lapin_vitesse), randint(*lapin_vitesse))
+            #car un acteur de type lapin a une dimension [7,7] et se déplace aléatoirement de 0 à 1
+        elif type_name == renard_type_name :
             self.type = Renard()
-            self._dimension = [7,7]
-            self._speed = pygame.Vector2(randint(-3,3), randint(-3,3))
-            #car un acteur de type renard a une dimensions [30,30], et se déplace aléatoirement de 0 à 3
+            self._dimension = renard_dimension
+            self._speed = pygame.Vector2(randint(*renard_vitesse), randint(*renard_vitesse))
+            #car un acteur de type renard a une dimensions [10,10], et se déplace aléatoirement de 0 à 3
             
 
     @property
@@ -43,7 +44,7 @@ class Actor:
     @position.setter
     def position(self, position: pygame.Vector2) -> None:
         if position.x < 0 or position.y < 0:
-            raise ValueError("each position values must be zero or positive")
+            raise ValueError("chaque valeur doit être nulle ou positive.")
         self._position = position
 
     @property
@@ -61,7 +62,7 @@ class Actor:
     @dimension.setter
     def dimension(self, dimension: Tuple[int, int]) -> None:
         if dimension[0] <= 0 or dimension[1] <= 0:
-            raise ValueError("each dimension value must be positive")
+            raise ValueError("chaque dimension doit être positive.")
         self._dimension = dimension
 
 
@@ -115,18 +116,18 @@ class ActorSprite(pygame.sprite.Sprite):
         self._rect = rect
 
     def test_touching_surface_boundaries(self) -> None:
-        # Vérifier les collisions avec les bords et inverser la direction si nécessaire
+        #vérifier les collisions avec les bords 
         if self.rect.left < 0:
-            self.rect.left = 0  # Positionner au bord gauche
-            self._actor.speed.x = -self._actor.speed.x  # Inverser la direction horizontale
+            self.rect.left = 0  #remettre bord gauche
+            self._actor.speed.x = -self._actor.speed.x  #inverser la direction 
         if self.rect.right > self._surface.get_width():
-            self.rect.right = self._surface.get_width()  # Positionner au bord droit
-            self._actor.speed.x = -self._actor.speed.x  # Inverser la direction horizontale
+            self.rect.right = self._surface.get_width()  #remettre au bord droit
+            self._actor.speed.x = -self._actor.speed.x  #inverser la direction horizontale
         if self.rect.top < 0:
-            self.rect.top = 0  # Positionner au bord supérieur
-            self._actor.speed.y = -self._actor.speed.y  # Inverser la direction verticale
+            self.rect.top = 0  #remettre au bord supérieur
+            self._actor.speed.y = -self._actor.speed.y  #inverser la direction verticale
         if self.rect.bottom > self._surface.get_height():
-            self.rect.bottom = self._surface.get_height()  # Positionner au bord inférieur
+            self.rect.bottom = self._surface.get_height()  #remettre au bord inférieur
             self._actor.speed.y = -self._actor.speed.y
     
  
@@ -138,7 +139,7 @@ class ActorSprite(pygame.sprite.Sprite):
             elif type(self._actor.type) == Lapin :
                 self._actor._speed = pygame.Vector2(randint(-1,1), randint(-1,1))
                 if self._actor._speed.length_squared() > 0:
-                    self._actor.type.energie -= 1
+                    self._actor.type.energie -= 5
                 
                 # Vérifie si le lapin a atteint son âge maximal en cycles
                 
@@ -154,9 +155,9 @@ class ActorSprite(pygame.sprite.Sprite):
             elif type(self._actor.type) == Renard :
                 self._actor._speed = pygame.Vector2(randint(-3,3), randint(-3,3))
                 if self._actor._speed.length_squared() > 0:
-                    self._actor.type.energie -= 1
+                    self._actor.type.energie -= 0.5
                 
-                    # Vérifie si le renard a atteint son âge maximal en cycles
+                # Vérifie si le renard a atteint son âge maximal en cycles
                 if self._actor.type.age >= self._actor.type.age_maximal * 12 * 24:  # 5 cycles = 5 fois 24 étapes pour le renard
                     print("Le renard est mort après", self._actor.type.age_maximal, "cycles")
                     self._actor.type.vivant = False  # Le renard meurt
@@ -195,7 +196,7 @@ class App:
         self.__running = True
 
          #configuration des cycles et étapes
-        self.__fps = FPS  #image par seconde
+        self.__FPS = FPS  #image par seconde
         self.__steps_per_cycle = 12  #nbr d'étapes par cycle
         self.__current_frame = 0  #compte les frames dans l'étape
         self.__current_step = 1  #compte les étapes dans le cycle
@@ -212,24 +213,26 @@ class App:
             pygame.quit()
             exit()
 
-    def __init_actors(self) -> None:
-        self.__actors_sprites = pygame.sprite.Group()# On crée un groupe pourles acteurs
-        
-        #création des plantes
-        for _ in range(700):
-            plante = Actor("plante")                            
-            ActorSprite(self.__screen, plante, "green", [self.__actors_sprites])
 
-        #création des lapins
-        for _ in range(520) :
-            lapin = Actor("lapin") 
-            ActorSprite(self.__screen, lapin, "white", [self.__actors_sprites])
-        
-        #création des renards
-        for _ in range(22):
-            renard = Actor("renard")
-            ActorSprite(self.__screen, renard, "orange", [self.__actors_sprites])
-            
+    def __init_actors(self) -> None:
+        self.__actors_sprites = pygame.sprite.Group()
+        self.create_actors(plante_type_name, plante_nombre_initial, plante_couleur)
+        self.create_actors(lapin_type_name, lapin_nombre_initial, lapin_couleur)
+        self.create_actors(renard_type_name, renard_nombre_initial, renard_couleur)
+                           
+    def create_actors(self, type_name: str, count: int, color: str) -> None:
+       #gérer la création des entité
+        for _ in range(count):
+            actor = Actor(type_name)  # Crée un acteur (plante, lapin, ou renard)
+            ActorSprite(self.__screen, actor, color, [self.__actors_sprites])  # Associe un sprite
+
+
+    def __update_actors(self) -> None:
+        self.__actors_sprites.update()
+        for sprite in self.__actors_sprites.copy():
+            if not sprite._actor.type.est_vivant():  
+                sprite.kill()  
+                        
     #méthode pour gérer les collisions entre les sprites
     def check_collision(self)-> None:
         MAX_LAPINS = 520  
@@ -302,11 +305,7 @@ class App:
                         ActorSprite(self.__screen, Actor(enfant.__class__.__name__.lower()), color, [self.__actors_sprites])#CHATGPT
                         #print(f"Un nouveau {enfant.__class__.__name__.lower()} est né avec {enfant.energie} d'énergie.")
                         
-    def __update_actors(self) -> None:
-        self.__actors_sprites.update()
-        for sprite in self.__actors_sprites.copy():
-            if not sprite._actor.type.est_vivant():  
-                sprite.kill()  
+
 
     def afficher_resume_cycle(self) -> None:
         #affiche le récap des populations pour le cycle actuel
